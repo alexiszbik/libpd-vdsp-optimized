@@ -8,6 +8,7 @@
 
 #include "m_pd.h"
 #include "math.h"
+#include "Accelerate/Accelerate.h"
 
 /* -------------------------- sig~ ------------------------------ */
 static t_class *sig_tilde_class;
@@ -23,8 +24,10 @@ static t_int *sig_tilde_perform(t_int *w)
     t_float f = *(t_float *)(w[1]);
     t_sample *out = (t_sample *)(w[2]);
     int n = (int)(w[3]);
+    vDSP_vfill(&f, out, 1, n);
+    /*
     while (n--)
-        *out++ = f;
+        *out++ = f;*/
     return (w+4);
 }
 
@@ -33,7 +36,8 @@ static t_int *sig_tilde_perf8(t_int *w)
     t_float f = *(t_float *)(w[1]);
     t_sample *out = (t_sample *)(w[2]);
     int n = (int)(w[3]);
-
+    vDSP_vfill(&f, out, 1, n);
+    /*
     for (; n; n -= 8, out += 8)
     {
         out[0] = f;
@@ -44,7 +48,7 @@ static t_int *sig_tilde_perf8(t_int *w)
         out[5] = f;
         out[6] = f;
         out[7] = f;
-    }
+    }*/
     return (w+4);
 }
 
@@ -164,11 +168,14 @@ static t_int *line_tilde_perf8(t_int *w)
     else
     {
         t_sample f = x->x_value = x->x_target;
+        vDSP_vfill(&f, out, 1, n);
+        /*
         for (; n; n -= 8, out += 8)
         {
             out[0] = f; out[1] = f; out[2] = f; out[3] = f;
             out[4] = f; out[5] = f; out[6] = f; out[7] = f;
         }
+         */
     }
     return (w+4);
 }

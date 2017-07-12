@@ -8,6 +8,7 @@
 
 #include "m_pd.h"
 #include <math.h>
+#include "Accelerate/Accelerate.h"
 #define LOGTEN 2.302585092994
 
 /* ------------------------- clip~ -------------------------- */
@@ -39,13 +40,14 @@ static t_int *clip_perform(t_int *w)
     t_sample *in = (t_sample *)(w[2]);
     t_sample *out = (t_sample *)(w[3]);
     int n = (int)(w[4]);
-    while (n--)
+    vDSP_vclip(in, 1, &x->x_lo, &x->x_hi, out, 1, n);
+    /*while (n--)
     {
         t_sample f = *in++;
         if (f < x->x_lo) f = x->x_lo;
         if (f > x->x_hi) f = x->x_hi;
         *out++ = f;
-    }
+    }*/
     return (w+5);
 }
 
