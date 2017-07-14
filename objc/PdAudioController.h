@@ -12,6 +12,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PdAudioUnit.h"
 
+@protocol PdAudioControllerDelegate <NSObject>
+@optional
+- (void)receiveVuValue:(Float32)value;
+@end
+
 typedef enum PdAudioStatus {
 	PdAudioOK = 0,              // success
 	PdAudioError = -1,          // unrecoverable error
@@ -28,8 +33,10 @@ typedef enum PdAudioStatus {
 @interface PdAudioController : NSObject
 #else
 // AVAudioSessionDelegate is deprecated starting in iOS 6
-@interface PdAudioController : NSObject	<AVAudioSessionDelegate>
+@interface PdAudioController : NSObject	<AVAudioSessionDelegate, PdAudioUnitDelegate>
 #endif
+
+@property (nonatomic, assign) id <PdAudioControllerDelegate> delegate;
 
 /// Read only properties that are set by the configure methods
 @property (nonatomic, readonly) int sampleRate;
@@ -72,5 +79,10 @@ typedef enum PdAudioStatus {
 
 /// Print current settings to the console.
 - (void)print;
+
+- (NSString*)getDebugString;
+
+- (void)startRecAtPath:(NSString*)path;
+- (void)stopRec;
 
 @end

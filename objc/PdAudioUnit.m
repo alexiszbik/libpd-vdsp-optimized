@@ -12,6 +12,8 @@
 #import "PdBase.h"
 #import "AudioHelpers.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <Accelerate/Accelerate.h>
+#import "HeapBuffer.h"
 
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
@@ -19,8 +21,19 @@ static const AudioUnitElement kOutputElement = 0;
 @interface PdAudioUnit () {
 @private
 	BOOL inputEnabled_;
+    BOOL isRecording_;
 	BOOL initialized_;
 	int blockSizeAsLog_;
+    
+    ExtAudioFileRef extAudioFileRef;
+    NSString* path;
+    
+    AudioStreamBasicDescription outputFormat;
+    
+    HeapBuffer* heapBufferOutput;
+    
+    Float32 *inputBuffer;
+    Float32 *outputBuffer;
 }
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
@@ -32,15 +45,130 @@ static const AudioUnitElement kOutputElement = 0;
 
 @synthesize audioUnit = audioUnit_;
 @synthesize active = active_;
+@synthesize delegate = delegate_;
+
+#pragma mark - AURenderCallback
+
+static OSStatus AudioRenderCallback(void *inRefCon,
+                                    AudioUnitRenderActionFlags *ioActionFlags,
+                                    const AudioTimeStamp *inTimeStamp,
+                                    UInt32 inBusNumber,
+                                    UInt32 inNumberFrames,
+                                    AudioBufferList *ioData) {
+    
+    PdAudioUnit *pdAudioUnit = (PdAudioUnit *)inRefCon;
+    
+    Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
+    
+    if (pdAudioUnit->inputEnabled_) {
+        AudioUnitRender(pdAudioUnit->audioUnit_, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
+        
+        [pdAudioUnit sendVuValue:ioData withSize:inNumberFrames];
+        if (pdAudioUnit->isRecording_) {
+            [pdAudioUnit writeData:ioData withSize:inNumberFrames];
+        }
+    }
+    
+    float ticksOutput = ceil((inNumberFrames / 64.f)) - [pdAudioUnit->heapBufferOutput remainingTicks:2];
+    
+    [PdBase processFloatWithInputBuffer:pdAudioUnit->inputBuffer outputBuffer:pdAudioUnit->outputBuffer ticks:ticksOutput];
+    
+    [pdAudioUnit->heapBufferOutput push:pdAudioUnit->outputBuffer size:ticksOutput*64*2];
+    
+    [pdAudioUnit->heapBufferOutput pull:&(auBuffer) size:inNumberFrames*2];
+    
+    return noErr;
+}
+
+-(void)writeData:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames {
+    OSStatus err = ExtAudioFileWriteAsync(extAudioFileRef,
+                                          inNumberFrames,
+                                          ioData);
+    if (err != 0) {
+        NSLog(@"error!!!!");
+    }
+}
+
+-(void)sendVuValue:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames {
+    
+    Float32* dataBuf = (Float32 *)ioData->mBuffers[0].mData;
+    Float32 fMagout = 0;
+    
+    vDSP_maxmgv(dataBuf, 1, &fMagout, inNumberFrames);
+    
+    [delegate_ receiveVuValue:fMagout];
+}
+
+-(void)closeRecording {
+    isRecording_ = NO;
+    
+    if (extAudioFileRef) {
+        OSStatus result = ExtAudioFileDispose(extAudioFileRef);
+        extAudioFileRef = NULL;
+    }
+}
+
+-(BOOL)enableRecordingToPath:(NSString*)outputPath {
+    outputFormat = [self ASBDForSampleRate:44100 numberChannels:2];
+    NSURL* outputFileUrl = [NSURL fileURLWithPath:outputPath];
+    path = outputPath;
+    
+    AudioStreamBasicDescription temp = {0};
+    temp.mBytesPerFrame = 4;
+    temp.mBytesPerPacket = 4;
+    temp.mChannelsPerFrame = 2;
+    temp.mBitsPerChannel = 16;
+    temp.mFramesPerPacket = 1;
+    temp.mFormatFlags = kAudioFormatFlagIsPacked | kAudioFormatFlagIsSignedInteger;
+    temp.mFormatID = kAudioFormatLinearPCM;
+    temp.mSampleRate = 44100;
+    
+    UInt32 size = sizeof(temp);
+    OSStatus err = AudioFormatGetProperty(kAudioFormatProperty_FormatInfo, 0, NULL, &size, &temp);
+    
+    err = ExtAudioFileCreateWithURL((__bridge CFURLRef)outputFileUrl,
+                                    kAudioFileWAVEType,
+                                    &temp,
+                                    NULL,
+                                    kAudioFileFlags_EraseFile,
+                                    &extAudioFileRef);
+    
+    
+    err = ExtAudioFileSetProperty(extAudioFileRef,
+                                  kExtAudioFileProperty_ClientDataFormat,
+                                  sizeof(AudioStreamBasicDescription),
+                                  &outputFormat);
+    
+    err = ExtAudioFileWriteAsync(extAudioFileRef, 0, NULL);
+    
+    isRecording_ = YES;
+    
+    return YES;
+}
+
+-(NSString*)pathToRecording {
+    return path;
+}
 
 #pragma mark - Init / Dealloc
+
+#define MAX_BUFFER_SIZE 8192
 
 - (id)init {
 	self = [super init];
 	if (self) {
 		initialized_ = NO;
 		active_ = NO;
+        isRecording_ = NO;
 		blockSizeAsLog_ = log2int([PdBase getBlockSize]);
+        _debugString = 0;
+        
+        heapBufferOutput = [[HeapBuffer alloc] initWithMaxSize:MAX_BUFFER_SIZE];
+        
+        inputBuffer = (Float32*)malloc(sizeof(Float32)*MAX_BUFFER_SIZE);
+        memset(inputBuffer, 0, MAX_BUFFER_SIZE);
+        outputBuffer = (Float32*)malloc(sizeof(Float32)*MAX_BUFFER_SIZE);
+        memset(outputBuffer, 0, MAX_BUFFER_SIZE);
 	}
 	return self;
 }
@@ -148,28 +276,6 @@ static const AudioUnitElement kOutputElement = 0;
 	return description;
 }
 
-#pragma mark - AURenderCallback
-
-static OSStatus AudioRenderCallback(void *inRefCon,
-                                    AudioUnitRenderActionFlags *ioActionFlags,
-                                    const AudioTimeStamp *inTimeStamp,
-                                    UInt32 inBusNumber,
-                                    UInt32 inNumberFrames,
-                                    AudioBufferList *ioData) {
-	
-	PdAudioUnit *pdAudioUnit = (PdAudioUnit *)inRefCon;
-	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
-	
-	if (pdAudioUnit->inputEnabled_) {
-		AudioUnitRender(pdAudioUnit->audioUnit_, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
-	}
-	
-	int ticks = inNumberFrames >> pdAudioUnit->blockSizeAsLog_; // this is a faster way of computing (inNumberFrames / blockSize)
-	[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
-	return noErr;
-}
-
-
 - (AURenderCallback)renderCallback {
 	return AudioRenderCallback;
 }
@@ -221,13 +327,18 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	AURenderCallbackStruct callbackStruct;
 	callbackStruct.inputProc = self.renderCallback;
 	callbackStruct.inputProcRefCon = self;
+    
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
                                                   kAudioUnitProperty_SetRenderCallback,
                                                   kAudioUnitScope_Input,
                                                   kOutputElement,
                                                   &callbackStruct,
                                                   sizeof(callbackStruct)));
+    
+    //AudioUnitAddPropertyListener(audioUnit_, kAudioUnitProperty_MaximumFramesPerSlice, listener, self);
 	
+    //sAudioUnitAddPropertyListener(audioUnit_, kAudioUnitProperty_SampleRate, listener, self);
+    
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(audioUnit_));
 	initialized_ = YES;
 	AU_LOGV(@"initialized audio unit");

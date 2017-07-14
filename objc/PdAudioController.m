@@ -40,6 +40,7 @@
 @synthesize ticksPerBuffer = ticksPerBuffer_;
 @synthesize active = active_;
 @synthesize audioUnit = audioUnit_;
+@synthesize delegate = delegate_;
 
 - (id)init {
 	self = [self initWithAudioUnit:[[[PdAudioUnit alloc] init] autorelease]];
@@ -63,8 +64,13 @@
 		AU_LOG_IF_ERROR(error, @"Audio Session activation failed");
 		AU_LOGV(@"Audio Session initialized");
 		self.audioUnit = audioUnit;
+        self.audioUnit.delegate = self;
 	}
 	return self;
+}
+
+- (void) receiveVuValue:(Float32)value {
+    [delegate_ receiveVuValue:value];
 }
 
 - (int)ticksPerBuffer {
@@ -156,7 +162,7 @@
 	double currentHardwareSampleRate = globalSession.currentHardwareSampleRate;
 #endif
 	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
-	sampleRate_ = currentHardwareSampleRate;
+    sampleRate_ = 44100;//currentHardwareSampleRate;
 	if (!floatsAreEqual(sampleRate, currentHardwareSampleRate)) {
 		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)", currentHardwareSampleRate);
 		return PdAudioPropertyChanged;
@@ -297,5 +303,17 @@
 #endif
 	[self.audioUnit print];
 }
+    
+- (NSString*)getDebugString {
+    return [NSString stringWithFormat:@"%f",[self.audioUnit debugString]];
+}
+    
+- (void)startRecAtPath:(NSString *)path {
+    [self.audioUnit enableRecordingToPath:path];
+}
+- (void)stopRec {
+    [self.audioUnit closeRecording];
+}
+    
 
 @end

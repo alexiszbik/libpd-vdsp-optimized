@@ -745,7 +745,7 @@ static inline int PD_BIGORSMALL(t_float f)  /* exponent outside (-64,64) */
 {
     t_bigorsmall32 pun;
     pun.f = f;
-    return((pun.ui & 0x20000000) == ((pun.ui >> 1) & 0x20000000));
+    return ((pun.ui & 0x20000000) == ((pun.ui >> 1) & 0x20000000));
 }
 
 #elif PD_FLOATSIZE == 64

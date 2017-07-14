@@ -11,6 +11,12 @@
 #import <Foundation/Foundation.h>
 #import "AudioUnit/AudioUnit.h"
 
+@protocol PdAudioUnitDelegate <NSObject>
+@optional
+- (void)receiveVuValue:(Float32)value;
+@end
+
+
 /// PdAudioUnit: object that operates pd's audio input and
 /// output through an Audio Unit. The parameters can be changed
 /// after it has been instatiated with its configure method,
@@ -19,6 +25,8 @@
 /// For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
 ///
 @interface PdAudioUnit : NSObject
+
+@property (nonatomic, assign) id <PdAudioUnitDelegate> delegate;
 
 /// A reference to the audio unit, which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
@@ -49,6 +57,8 @@
 /// Check or set the active status of the audio unit
 @property (nonatomic, getter = isActive) BOOL active;
 
+@property (assign)float  debugString;
+
 /// The configure method sets all parameters of the audio unit that may require it to be
 /// recreated at the same time.  This is an expensive process and will stop the audio unit
 /// before any reconstruction, causing a momentary pause in audio and UI if
@@ -61,5 +71,9 @@
 /// Called by configureWithSampleRate when setting up the internal audio unit.
 /// Default format: 32 bit, floating point, linear PCM, interleaved
 - (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numChannels;
+
+-(BOOL)enableRecordingToPath:(NSString*)outputPath;
+
+-(void)closeRecording;
 
 @end

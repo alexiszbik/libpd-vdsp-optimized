@@ -325,6 +325,16 @@ static NSTimer *midiPollTimer;
 	}
 }
 
++ (int)sendFloatList:(float*)list size:(int)size toReceiver:(NSString *)receiverName {
+  @synchronized(self) {
+    if (libpd_start_message((int) size)) return -100;
+    for (size_t i = 0; i<size; i++) {
+      libpd_add_float(list[i]);
+    }
+    return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
+  }
+}
+
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
 	@synchronized(self) {
 		if (libpd_start_message((int) [list count])) return -100;

@@ -120,6 +120,7 @@
 + (int)sendFloat:(float)value toReceiver:(NSString *)receiverName;
 + (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName;
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;  // list may be nil
++ (int)sendFloatList:(float*)list size:(int)size toReceiver:(NSString *)receiverName; //list as float list
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName;  // list may be nil
 
 + (int)arraySizeForArrayNamed:(NSString *)arrayName;
