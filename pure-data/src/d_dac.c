@@ -110,12 +110,15 @@ static void *adc_new(t_symbol *s, int argc, t_atom *argv)
     return (x);
 }
 
+#include <string.h>
+
 t_int *copy_perform(t_int *w)
 {
     t_sample *in1 = (t_sample *)(w[1]);
     t_sample *out = (t_sample *)(w[2]);
     int n = (int)(w[3]);
-    while (n--) *out++ = *in1++;
+    //while (n--) *out++ = *in1++;
+    memcpy(out, in1, n*sizeof(t_sample));
     return (w+4);
 }
 
@@ -124,7 +127,8 @@ static t_int *copy_perf8(t_int *w)
     t_sample *in1 = (t_sample *)(w[1]);
     t_sample *out = (t_sample *)(w[2]);
     int n = (int)(w[3]);
-
+    memcpy(out, in1, n*sizeof(t_sample));
+    /*
     for (; n; n -= 8, in1 += 8, out += 8)
     {
         t_sample f0 = in1[0];
@@ -145,6 +149,7 @@ static t_int *copy_perf8(t_int *w)
         out[6] = f6;
         out[7] = f7;
     }
+    */
     return (w+4);
 }
 

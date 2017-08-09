@@ -518,7 +518,8 @@ t_symbol *binbuf_realizedollsym(t_symbol *s, int ac, t_atom *av, int tonew)
     int next=0, i=MAXPDSTRING;
     t_atom dollarnull;
     SETFLOAT(&dollarnull, canvas_getdollarzero());
-    while(i--)buf2[i]=0;
+    //while(i--)buf2[i]=0;
+    memset(buf2,0,i);
 
 #if 1
     /* JMZ: currently, a symbol is detected to be A_DOLLSYM if it starts with '$'

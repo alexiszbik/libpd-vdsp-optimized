@@ -26,7 +26,7 @@
 	[super dealloc];
 }
 
-- (int)addListener:(NSObject<PdListener> *)listener forChannel: (int)channel {
+- (int)addListener:(NSObject<PdMidiListener> *)listener forChannel: (int)channel {
 	NSMutableArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
 	if (!listeners) {
 		listeners = [[NSMutableArray alloc] init];
@@ -37,7 +37,7 @@
 	return 0;
 }
 
-- (int)removeListener:(NSObject<PdListener> *)listener forChannel:(int)channel {
+- (int)removeListener:(NSObject<PdMidiListener> *)listener forChannel:(int)channel {
 	NSMutableArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
 	if (listeners) {
 		[listeners removeObject:listener];

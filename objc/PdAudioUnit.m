@@ -21,7 +21,6 @@ static const AudioUnitElement kOutputElement = 0;
 @interface PdAudioUnit () {
 @private
 	BOOL inputEnabled_;
-    BOOL isRecording_;
 	BOOL initialized_;
 	int blockSizeAsLog_;
     
@@ -29,11 +28,6 @@ static const AudioUnitElement kOutputElement = 0;
     NSString* path;
     
     AudioStreamBasicDescription outputFormat;
-    
-    HeapBuffer* heapBufferOutput;
-    
-    Float32 *inputBuffer;
-    Float32 *outputBuffer;
 }
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
@@ -92,11 +86,11 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 -(void)sendVuValue:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames {
     
     Float32* dataBuf = (Float32 *)ioData->mBuffers[0].mData;
-    Float32 fMagout = 0;
     
-    vDSP_maxmgv(dataBuf, 1, &fMagout, inNumberFrames);
+    Float32 fMag = 0;
+    vDSP_maxmgv(dataBuf, 1, &fMag, inNumberFrames);
     
-    [delegate_ receiveVuValue:fMagout];
+    [delegate_ receiveVuValue:fMag];
 }
 
 -(void)closeRecording {
@@ -169,6 +163,9 @@ static OSStatus AudioRenderCallback(void *inRefCon,
         memset(inputBuffer, 0, MAX_BUFFER_SIZE);
         outputBuffer = (Float32*)malloc(sizeof(Float32)*MAX_BUFFER_SIZE);
         memset(outputBuffer, 0, MAX_BUFFER_SIZE);
+        vuMeterBuffer = (Float32*)malloc(sizeof(Float32)*MAX_BUFFER_SIZE);
+        memset(vuMeterBuffer, 0, MAX_BUFFER_SIZE);
+        
 	}
 	return self;
 }

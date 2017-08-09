@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 #import "AudioUnit/AudioUnit.h"
+#include "ABLLink.h"
+#import "HeapBuffer.h"
 
 @protocol PdAudioUnitDelegate <NSObject>
 @optional
@@ -24,7 +26,21 @@
 ///
 /// For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
 ///
-@interface PdAudioUnit : NSObject
+@interface PdAudioUnit : NSObject {
+@public
+    //ableton link
+    ABLLinkRef linkRef_;
+    UInt32 outputLatency_;
+    UInt32 tickTime_;
+    
+    HeapBuffer* heapBufferOutput;
+    
+    Float32 *inputBuffer;
+    Float32 *outputBuffer;
+    Float32 *vuMeterBuffer;
+    
+    BOOL isRecording_;
+}
 
 @property (nonatomic, assign) id <PdAudioUnitDelegate> delegate;
 
@@ -75,5 +91,8 @@
 -(BOOL)enableRecordingToPath:(NSString*)outputPath;
 
 -(void)closeRecording;
+
+-(void)writeData:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames;
+-(void)sendVuValue:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames;
 
 @end

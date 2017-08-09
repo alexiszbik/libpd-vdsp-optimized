@@ -255,8 +255,31 @@ static NSTimer *midiPollTimer;
 	[midiDelegate release];
 	midiDelegate = newDelegate;
 	if (midiDelegate && pollingEnabled) {
-		midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:self selector:@selector(receiveMidiTimer:) userInfo:nil repeats:YES];
-		[[NSRunLoop mainRunLoop] addTimer:midiPollTimer forMode:NSRunLoopCommonModes];
+		/*midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:self selector:@selector(receiveMidiTimer:) userInfo:nil repeats:YES];
+		[[NSRunLoop mainRunLoop] addTimer:midiPollTimer forMode:NSRunLoopCommonModes];*/
+    //[midiPollTimer fire];
+    
+/*
+    
+    // Create a dispatch source that'll act as a timer on the concurrent queue
+    // You'll need to store this somewhere so you can suspend and remove it later on
+    dispatch_source_t dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,
+                                                              dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+    
+    // Setup params for creation of a recurring timer
+    double interval = 0.002;
+    dispatch_time_t startTime = dispatch_time(DISPATCH_TIME_NOW, 0);
+    uint64_t intervalTime = (int64_t)(interval * NSEC_PER_SEC);
+    dispatch_source_set_timer(dispatchSource, startTime, intervalTime, 0);
+    
+    // Attach the block you want to run on the timer fire
+    dispatch_source_set_event_handler(dispatchSource, ^{
+      // Your code here
+      libpd_queued_receive_midi_messages();
+    });
+    
+    // Start the timer
+    dispatch_resume(dispatchSource);*/
 	}
 }
 
@@ -376,7 +399,12 @@ static NSTimer *midiPollTimer;
 
 + (int)processFloatWithInputBuffer:(const float *)inputBuffer outputBuffer:(float *)outputBuffer ticks:(int)ticks {
 	@synchronized(self) {
-		return libpd_process_float(ticks, inputBuffer, outputBuffer);
+    int result = libpd_process_float(ticks, inputBuffer, outputBuffer);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+      libpd_queued_receive_midi_messages();
+    });
+    
+    return result;
 	}
 }
 

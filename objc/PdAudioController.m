@@ -70,7 +70,9 @@
 }
 
 - (void) receiveVuValue:(Float32)value {
+    if (delegate_) {
     [delegate_ receiveVuValue:value];
+    }
 }
 
 - (int)ticksPerBuffer {
