@@ -161,7 +161,8 @@ static t_int *line_tilde_perf8(t_int *w)
     if (x->x_ticksleft)
     {
         t_sample f = x->x_value;
-        while (n--) *out++ = f, f += x->x_inc;
+        //while (n--) *out++ = f, f += x->x_inc;
+        vDSP_vramp(&f, &x->x_inc, out, 1, n);
         x->x_value += x->x_biginc;
         x->x_ticksleft--;
     }

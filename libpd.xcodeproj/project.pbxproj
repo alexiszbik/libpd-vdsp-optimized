@@ -216,6 +216,7 @@
 		30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
+		7506E3BF1F3E282A00A03E35 /* pd_deqfilter_tilde.c in Sources */ = {isa = PBXBuildFile; fileRef = 7506E3BE1F3E282A00A03E35 /* pd_deqfilter_tilde.c */; };
 		75110C111F20DAE600607A43 /* pd_counter.c in Sources */ = {isa = PBXBuildFile; fileRef = 75110C101F20DAE600607A43 /* pd_counter.c */; };
 		756C4FFB1F31CE05002A8ECC /* pd_square_tilde.c in Sources */ = {isa = PBXBuildFile; fileRef = 756C4FFA1F31CE05002A8ECC /* pd_square_tilde.c */; };
 		75909E9F1F17653600AC1B5F /* HeapBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 75909E9D1F17653600AC1B5F /* HeapBuffer.h */; };
@@ -343,6 +344,7 @@
 		30FDBE7C1ACAF701008B02E9 /* bob~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "bob~.c"; path = "pure-data/extra/bob~/bob~.c"; sourceTree = SOURCE_ROOT; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
+		7506E3BE1F3E282A00A03E35 /* pd_deqfilter_tilde.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pd_deqfilter_tilde.c; path = "../../../HelloWorld-PdExternal-master/Source/pd_deqfilter_tilde.c"; sourceTree = "<group>"; };
 		75110C101F20DAE600607A43 /* pd_counter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pd_counter.c; path = "../../../HelloWorld-PdExternal-master/pd_counter.c"; sourceTree = "<group>"; };
 		755D8EB21E5459320040B13D /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		756C4FFA1F31CE05002A8ECC /* pd_square_tilde.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pd_square_tilde.c; path = "../../../HelloWorld-PdExternal-master/Source/pd_square_tilde.c"; sourceTree = "<group>"; };
@@ -576,6 +578,7 @@
 				75DE0DE21EA0B6A4009C5060 /* pd_arrayTest.c */,
 				75C040BB1EB7822600D62FD0 /* pd_calcBiquad.c */,
 				756C4FFA1F31CE05002A8ECC /* pd_square_tilde.c */,
+				7506E3BE1F3E282A00A03E35 /* pd_deqfilter_tilde.c */,
 				30FDBE7B1ACAF6F2008B02E9 /* bob~ */,
 				30CEFE231A6A5EDB000E3BAE /* bonk~ */,
 				30CEFE251A6A5EDB000E3BAE /* choice */,
@@ -969,6 +972,7 @@
 				756C4FFB1F31CE05002A8ECC /* pd_square_tilde.c in Sources */,
 				75110C111F20DAE600607A43 /* pd_counter.c in Sources */,
 				30377F471866680A0026ED3E /* x_scalar.c in Sources */,
+				7506E3BF1F3E282A00A03E35 /* pd_deqfilter_tilde.c in Sources */,
 				0E8C8DCB1312007F000B9D7A /* PdFile.m in Sources */,
 				5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */,
 				110E6DD5147B838F00282ABC /* AudioHelpers.m in Sources */,
