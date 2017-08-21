@@ -16,6 +16,8 @@
 @protocol PdAudioUnitDelegate <NSObject>
 @optional
 - (void)receiveVuValue:(Float32)value;
+- (void)didCloseRecording;
+- (void)recordingProgress:(Float32)progressRatio;
 @end
 
 

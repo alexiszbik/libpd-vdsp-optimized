@@ -25,6 +25,7 @@ static const AudioUnitElement kOutputElement = 0;
 	int blockSizeAsLog_;
     
     ExtAudioFileRef extAudioFileRef;
+    unsigned long audioFileSize;
     NSString* path;
     
     AudioStreamBasicDescription outputFormat;
@@ -75,13 +76,21 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 }
 
 -(void)writeData:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames {
+    
     OSStatus err = ExtAudioFileWriteAsync(extAudioFileRef,
                                           inNumberFrames,
                                           ioData);
-    if (err != 0) {
-        NSLog(@"error!!!!");
+    audioFileSize += inNumberFrames;
+    
+    Float32 audioFileSizeFloat = (Float32)audioFileSize;
+    
+    [delegate_ recordingProgress:(audioFileSizeFloat/ (44100.f*10.f))];
+    
+    if (audioFileSize > 44100*10) {
+        [self closeRecording];
     }
 }
+
 
 -(void)sendVuValue:(AudioBufferList *)ioData withSize:(UInt32)inNumberFrames {
     
@@ -100,9 +109,13 @@ static OSStatus AudioRenderCallback(void *inRefCon,
         OSStatus result = ExtAudioFileDispose(extAudioFileRef);
         extAudioFileRef = NULL;
     }
+    [delegate_ didCloseRecording];
 }
 
 -(BOOL)enableRecordingToPath:(NSString*)outputPath {
+    
+    audioFileSize = 0;
+    
     outputFormat = [self ASBDForSampleRate:44100 numberChannels:2];
     NSURL* outputFileUrl = [NSURL fileURLWithPath:outputPath];
     path = outputPath;

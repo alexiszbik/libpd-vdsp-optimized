@@ -74,6 +74,16 @@
     [delegate_ receiveVuValue:value];
     }
 }
+- (void) didCloseRecording {
+    if (delegate_) {
+        [delegate_ didCloseRecording];
+    }
+}
+- (void)recordingProgress:(Float32)progressRatio {
+    if (delegate_) {
+        [delegate_ recordingProgress:progressRatio];
+    }
+}
 
 - (int)ticksPerBuffer {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000

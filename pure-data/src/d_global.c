@@ -225,14 +225,9 @@ static t_int *sigcatch_perf8(t_int *w)
     t_sample *in = (t_sample *)(w[1]);
     t_sample *out = (t_sample *)(w[2]);
     int n = (int)(w[3]);
-    for (; n; n -= 8, in += 8, out += 8)
-    {
-       out[0] = in[0]; out[1] = in[1]; out[2] = in[2]; out[3] = in[3];
-       out[4] = in[4]; out[5] = in[5]; out[6] = in[6]; out[7] = in[7];
+    memcpy(out, in, n*sizeof(t_sample));
+    memset(in, 0,  n*sizeof(t_sample));
 
-       in[0] = 0; in[1] = 0; in[2] = 0; in[3] = 0;
-       in[4] = 0; in[5] = 0; in[6] = 0; in[7] = 0;
-    }
     return (w+4);
 }
 
@@ -285,6 +280,8 @@ static void *sigthrow_new(t_symbol *s)
     return (x);
 }
 
+#include <Accelerate/Accelerate.h>
+
 static t_int *sigthrow_perform(t_int *w)
 {
     t_sigthrow *x = (t_sigthrow *)(w[1]);
@@ -293,12 +290,7 @@ static t_int *sigthrow_perform(t_int *w)
     t_sample *out = x->x_whereto;
     if (out)
     {
-        while (n--)
-        {
-            *out += (PD_BIGORSMALL(*in) ? 0 : *in);
-            out++;
-            in++;
-        }
+        vDSP_vadd(out, 1, in, 1, out, 1, n);
     }
     return (w+4);
 }
