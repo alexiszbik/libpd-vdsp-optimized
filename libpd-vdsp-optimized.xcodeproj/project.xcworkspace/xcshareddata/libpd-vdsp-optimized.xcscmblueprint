@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "202F02983415EA2EF119F393D56165DC56148C0A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "202F02983415EA2EF119F393D56165DC56148C0A" : 9223372036854775807,
+    "CD05614C524C6C3F2B790EED793080B97A8CDA3C" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "16E47B10-4DDA-4B1F-96EC-283D26F5A7AC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "202F02983415EA2EF119F393D56165DC56148C0A" : "libpd-vdsp-optimized\/",
+    "CD05614C524C6C3F2B790EED793080B97A8CDA3C" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "libpd-vdsp-optimized",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "libpd-vdsp-optimized.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/alexiszbik\/libpd-vdsp-optimized.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "202F02983415EA2EF119F393D56165DC56148C0A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/alexiszbik\/yummylabo.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CD05614C524C6C3F2B790EED793080B97A8CDA3C"
+    }
+  ]
+}

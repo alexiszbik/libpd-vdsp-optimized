@@ -259,7 +259,7 @@
 		0E82A03A12EEFDEE0053280E /* x_misc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_misc.c; sourceTree = "<group>"; };
 		0E82A03B12EEFDEE0053280E /* x_net.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_net.c; sourceTree = "<group>"; };
 		0E82A03D12EEFDEE0053280E /* x_time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_time.c; sourceTree = "<group>"; };
-		119013AB1486450C00086F19 /* libpd-osx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-osx.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		119013AB1486450C00086F19 /* libpd-osx-vdsp-optimized.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-osx-vdsp-optimized.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30377F421866680A0026ED3E /* x_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_array.c; sourceTree = "<group>"; };
 		30377F431866680A0026ED3E /* x_scalar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_scalar.c; sourceTree = "<group>"; };
 		30377F441866680A0026ED3E /* x_text.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_text.c; sourceTree = "<group>"; };
@@ -292,7 +292,7 @@
 		7528CD031F543CC300DEA9C7 /* z_libpd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_libpd.c; sourceTree = "<group>"; };
 		7528CD041F543CC300DEA9C7 /* z_libpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_libpd.h; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		D2AAC07E0554694100DB518D /* libpd-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2AAC07E0554694100DB518D /* libpd-ios-vdsp-optimized.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-ios-vdsp-optimized.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,8 +318,8 @@
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2AAC07E0554694100DB518D /* libpd-ios.a */,
-				119013AB1486450C00086F19 /* libpd-osx.a */,
+				D2AAC07E0554694100DB518D /* libpd-ios-vdsp-optimized.a */,
+				119013AB1486450C00086F19 /* libpd-osx-vdsp-optimized.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -591,9 +591,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1190134E1486450C00086F19 /* libpd-osx */ = {
+		1190134E1486450C00086F19 /* libpd-vdsp-optimized-osx */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 119013A81486450C00086F19 /* Build configuration list for PBXNativeTarget "libpd-osx" */;
+			buildConfigurationList = 119013A81486450C00086F19 /* Build configuration list for PBXNativeTarget "libpd-vdsp-optimized-osx" */;
 			buildPhases = (
 				1190134F1486450C00086F19 /* Headers */,
 				119013571486450C00086F19 /* Sources */,
@@ -603,14 +603,14 @@
 			);
 			dependencies = (
 			);
-			name = "libpd-osx";
+			name = "libpd-vdsp-optimized-osx";
 			productName = libpd;
-			productReference = 119013AB1486450C00086F19 /* libpd-osx.a */;
+			productReference = 119013AB1486450C00086F19 /* libpd-osx-vdsp-optimized.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		D2AAC07D0554694100DB518D /* libpd-ios */ = {
+		D2AAC07D0554694100DB518D /* libpd-vdsp-optimized-ios */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "libpd-ios" */;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "libpd-vdsp-optimized-ios" */;
 			buildPhases = (
 				D2AAC07A0554694100DB518D /* Headers */,
 				D2AAC07B0554694100DB518D /* Sources */,
@@ -620,9 +620,9 @@
 			);
 			dependencies = (
 			);
-			name = "libpd-ios";
+			name = "libpd-vdsp-optimized-ios";
 			productName = libpd;
-			productReference = D2AAC07E0554694100DB518D /* libpd-ios.a */;
+			productReference = D2AAC07E0554694100DB518D /* libpd-ios-vdsp-optimized.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -631,9 +631,9 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0830;
 			};
-			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd" */;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd-vdsp-optimized" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -648,8 +648,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2AAC07D0554694100DB518D /* libpd-ios */,
-				1190134E1486450C00086F19 /* libpd-osx */,
+				D2AAC07D0554694100DB518D /* libpd-vdsp-optimized-ios */,
+				1190134E1486450C00086F19 /* libpd-vdsp-optimized-osx */,
 			);
 		};
 /* End PBXProject section */
@@ -845,8 +845,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -866,7 +865,7 @@
 					"-ObjC",
 					"-ldl",
 				);
-				PRODUCT_NAME = "pd-osx";
+				PRODUCT_NAME = "pd-osx-vdsp-optimized";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -875,8 +874,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -893,7 +891,7 @@
 					"-ObjC",
 					"-ldl",
 				);
-				PRODUCT_NAME = "pd-osx";
+				PRODUCT_NAME = "pd-osx-vdsp-optimized";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -902,7 +900,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -917,7 +914,7 @@
 					"-DHAVE_UNISTD_H",
 					"-DLIBPD_EXTRA",
 				);
-				PRODUCT_NAME = "pd-ios";
+				PRODUCT_NAME = "pd-ios-vdsp-optimized";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
@@ -928,7 +925,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -940,7 +936,7 @@
 					"-DHAVE_UNISTD_H",
 					"-DLIBPD_EXTRA",
 				);
-				PRODUCT_NAME = "pd-ios";
+				PRODUCT_NAME = "pd-ios-vdsp-optimized";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
@@ -950,13 +946,29 @@
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					./libpd_wrapper,
@@ -980,12 +992,27 @@
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					./libpd_wrapper,
@@ -1008,7 +1035,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		119013A81486450C00086F19 /* Build configuration list for PBXNativeTarget "libpd-osx" */ = {
+		119013A81486450C00086F19 /* Build configuration list for PBXNativeTarget "libpd-vdsp-optimized-osx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				119013A91486450C00086F19 /* Debug */,
@@ -1017,7 +1044,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "libpd-ios" */ = {
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "libpd-vdsp-optimized-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB921F08733DC00010E9CD /* Debug */,
@@ -1026,7 +1053,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd" */ = {
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd-vdsp-optimized" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
