@@ -931,6 +931,7 @@ static void *sigczero_new(t_float re, t_float im)
 
 static t_int *sigczero_perform(t_int *w)
 {
+    /*
     t_sample *inre1 = (t_sample *)(w[1]);
     t_sample *inim1 = (t_sample *)(w[2]);
     t_sample *inre2 = (t_sample *)(w[3]);
@@ -959,6 +960,33 @@ static t_int *sigczero_perform(t_int *w)
     vDSP_vmul(x->x_lastimArray,1, inre2, 1, inre2, 1, n);
     vDSP_vsub(outim, 1, inre2, 1, outim, 1, n);
 
+    return (w+9);
+     */
+    
+    t_sample *inre1 = (t_sample *)(w[1]);
+    t_sample *inim1 = (t_sample *)(w[2]);
+    t_sample *inre2 = (t_sample *)(w[3]);
+    t_sample *inim2 = (t_sample *)(w[4]);
+    t_sample *outre = (t_sample *)(w[5]);
+    t_sample *outim = (t_sample *)(w[6]);
+    t_sigczero *x = (t_sigczero *)(w[7]);
+    int n = (t_int)(w[8]);
+    int i;
+    t_sample lastre = x->x_lastre;
+    t_sample lastim = x->x_lastim;
+    for (i = 0; i < n; i++)
+    {
+        t_sample nextre = *inre1++;
+        t_sample nextim = *inim1++;
+        t_sample coefre = *inre2++;
+        t_sample coefim = *inim2++;
+        *outre++ = nextre - lastre * coefre + lastim * coefim;
+        *outim++ = nextim - lastre * coefim - lastim * coefre;
+        lastre = nextre;
+        lastim = nextim;
+    }
+    x->x_lastre = lastre;
+    x->x_lastim = lastim;
     return (w+9);
 }
 
