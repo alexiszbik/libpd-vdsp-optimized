@@ -823,6 +823,43 @@ static void *sigcpole_new(t_float re, t_float im)
 
 static t_int *sigcpole_perform(t_int *w)
 {
+    /*
+     t_sample *inre1 = (t_sample *)(w[1]);
+     t_sample *inim1 = (t_sample *)(w[2]);
+     t_sample *inre2 = (t_sample *)(w[3]);
+     t_sample *inim2 = (t_sample *)(w[4]);
+     t_sample *outre = (t_sample *)(w[5]);
+     t_sample *outim = (t_sample *)(w[6]);
+     t_sigcpole *x = (t_sigcpole *)(w[7]);
+     int n = (t_int)(w[8]);
+     int i;
+     t_sample lastre = x->x_lastre;
+     t_sample lastim = x->x_lastim;
+     
+     for (i = 0; i < n; i++)
+     {
+     t_sample nextre = *inre1++;
+     t_sample nextim = *inim1++;
+     t_sample coefre = *inre2++;
+     t_sample coefim = *inim2++;
+     
+     outre[i] = nextre + lastre * coefre - lastim * coefim;
+     outim[i] = nextim + lastre * coefim + lastim * coefre;
+     
+     lastim = outim[i];
+     lastre = outre[i];
+     }
+     
+     if (PD_BIGORSMALL(lastre))
+     lastre = 0;
+     if (PD_BIGORSMALL(lastim))
+     lastim = 0;
+     
+     x->x_lastre = lastre;
+     x->x_lastim = lastim;
+     return (w+9);
+     */
+    
     t_sample *inre1 = (t_sample *)(w[1]);
     t_sample *inim1 = (t_sample *)(w[2]);
     t_sample *inre2 = (t_sample *)(w[3]);
@@ -834,32 +871,24 @@ static t_int *sigcpole_perform(t_int *w)
     int i;
     t_sample lastre = x->x_lastre;
     t_sample lastim = x->x_lastim;
-    
     for (i = 0; i < n; i++)
     {
         t_sample nextre = *inre1++;
         t_sample nextim = *inim1++;
         t_sample coefre = *inre2++;
         t_sample coefim = *inim2++;
-        
-        outre[i] = nextre + lastre * coefre - lastim * coefim;
-        outim[i] = nextim + lastre * coefim + lastim * coefre;
-        
-        lastim = outim[i];
-        lastre = outre[i];
+        t_sample tempre = *outre++ = nextre + lastre * coefre - lastim * coefim;
+        lastim = *outim++ = nextim + lastre * coefim + lastim * coefre;
+        lastre = tempre;
     }
-    /*
-    vDSP_vadd(inre1, 1, outre, 1, outre, 1, n);
-    vDSP_vadd(inim1, 1, outim, 1, outim, 1, n);
-    */
     if (PD_BIGORSMALL(lastre))
         lastre = 0;
     if (PD_BIGORSMALL(lastim))
         lastim = 0;
-    
     x->x_lastre = lastre;
     x->x_lastim = lastim;
     return (w+9);
+
 }
 
 static void sigcpole_dsp(t_sigcpole *x, t_signal **sp)
