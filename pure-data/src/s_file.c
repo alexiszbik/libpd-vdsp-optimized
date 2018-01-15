@@ -278,7 +278,7 @@ static void sys_putpreference(const char *key, const char *value)
     char cmdbuf[MAXPDSTRING];
     snprintf(cmdbuf, MAXPDSTRING,
         "defaults write org.puredata.pd %s \"%s\" 2> /dev/null\n", key, value);
-    system(cmdbuf);
+    //system(cmdbuf);
 }
 
 static void sys_donesavepreferences( void)
