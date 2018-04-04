@@ -594,15 +594,21 @@ t_int *pow_tilde_perform(t_int *w)
     t_sample *in1 = (t_sample *)(w[1]);
     t_sample *in2 = (t_sample *)(w[2]);
     t_sample *out = (t_sample *)(w[3]);
+    
     int n = (int)(w[4]);
-    while (n--)
-    {
-        float f = *in1++;
-        if (f > 0)
-            *out = pow(f, *in2);
-        else *out = 0;
-        out++;
-        in2++;
+    
+    if (*in2 == 2) {
+        vDSP_vmul(in1, 1, in1, 1, out, 1, n);
+    } else {
+        while (n--)
+        {
+            float f = *in1++;
+            if (f > 0)
+                *out = pow(f, *in2);
+            else *out = 0;
+            out++;
+            in2++;
+        }
     }
     return (w+5);
 }
