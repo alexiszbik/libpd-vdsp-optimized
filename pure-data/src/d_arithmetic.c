@@ -698,6 +698,7 @@ t_int *min_perf8(t_int *w)
     t_sample *in2 = (t_sample *)(w[2]);
     t_sample *out = (t_sample *)(w[3]);
     int n = (int)(w[4]);
+    /*
     for (; n; n -= 8, in1 += 8, in2 += 8, out += 8)
     {
         t_sample f0 = in1[0], f1 = in1[1], f2 = in1[2], f3 = in1[3];
@@ -710,7 +711,10 @@ t_int *min_perf8(t_int *w)
         out[2] = (f2 < g2 ? f2 : g2); out[3] = (f3 < g3 ? f3 : g3);
         out[4] = (f4 < g4 ? f4 : g4); out[5] = (f5 < g5 ? f5 : g5);
         out[6] = (f6 < g6 ? f6 : g6); out[7] = (f7 < g7 ? f7 : g7);
-    }
+    }*/
+    
+    vDSP_vmin(in1, 1, in2, 1, out, 1, n);
+    
     return (w+5);
 }
 
